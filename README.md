@@ -7,46 +7,191 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
-## About Laravel
+## About Sera API
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Sera API is a Simple API for completing the Sera Backend Test Requirements
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+https://docs.google.com/document/d/1J8E68pOxGRdk9giDO-WumqAitl2QwClHUdjTPNDEIiA/edit?usp=sharing
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## How To
 
-## Learning Laravel
+#### If you don't use [sera-api-docker](https://github.com/edzerostudio/sera-api-docker)  
+Prepare your local mysql and mongodb database and configure .env file,  
+then run this command:  
+`npm install`  
+`npm run dev`  
+`php artisan migrate`  
+`php artisan serve`  
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Your application will be running in `http://localhost:8000`
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+#### If you use [sera-api-docker](https://github.com/edzerostudio/sera-api-docker) 
+Clone this project to:  
+`sera-api-docker/src`  
 
-## Laravel Sponsors
+Rename `.env.docker` to `.env`,  
+Then run this command:  
+`docker-compose build`  
+`docker-compose up`  
+`docker-compose exec php php artisan migrate`
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+Your application will be running in `http://localhost:8000`  
+Your mysql server will be running in `http://localhost:8085`  
+Your mongodb server will be running in `http://localhost:8081`  
 
-### Premium Partners
+## Endpoints
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+### Auth
+```
+(POST) /api/auth/login
+{
+    "email": "example@email.com",
+    "password": "secret",
+}
+```
+```
+(POST) /api/auth/register
+{
+    "name": "John Doe",
+    "email": "example@email.com",
+    "password": "secret",
+}
+```
+```
+(POST) /api/auth/logout
+```
+```
+(POST) /api/auth/refresh
+```
 
+### Regres
+```
+(POST) /api/regres/login
+{
+    "email": "example@email.com",
+    "password": "secret",
+}
+```
+```
+(POST) /api/regres/register
+{
+    "name": "John Doe",
+    "email": "example@email.com",
+}
+```
+
+### Data Filter
+```
+(GET) /api/filter
+[
+    "50000",
+    "75000",
+    "100000",
+    "150000",
+    "200000"
+]
+```
+### Articles (Firebase)
+```
+(GET) /api/articles
+{
+    "status": "success",
+    "data": {
+        "articles": {
+            "my-first-article": {
+                "body": "Lorem ipsum dolor sit amet",
+                "slug": "my-first-article",
+                "title": "This is my first article"
+            },
+            "my-second-article": {
+                "body": "Lorem ipsum dolor sit amet",
+                "slug": "my-second-article",
+                "title": "This is my second article"
+            },
+        },
+        "articlesCount": 2
+    }
+}
+```
+```
+(GET) /api/articles/{slug}
+{
+    "status": "success",
+    "article": {
+        "body": "Lorem ipsum dolor sit amet",
+        "slug": "my-first-article",
+        "title": "This is my first article"
+    }
+}
+```
+```
+(POST) /api/articles
+{
+    "title": "First Article",
+    "body": "This is not my first article.",
+    "slug": "first-blog-post"
+}
+```
+```
+(PUT) /api/articles/{slug}
+{
+    "title": "First Article",
+    "body": "This is not my first article.",
+    "slug": "first-blog-article"
+}
+```
+```
+(DELETE) /api/articles/{slug}
+```
+
+### Posts (Mongo)
+```
+(GET) /api/posts
+{
+    "posts": {
+        "my-first-post": {
+            "body": "Lorem ipsum dolor sit amet",
+            "slug": "my-first-post",
+            "title": "This is my first post"
+        },
+        "my-second-post": {
+            "body": "Lorem ipsum dolor sit amet",
+            "slug": "my-second-article",
+            "title": "This is my second post"
+        },
+    },
+    "postsCount": 2
+}
+```
+```
+(GET) /api/posts/{slug}
+{
+    "post": {
+        "body": "Lorem ipsum dolor sit amet",
+        "slug": "my-first-post",
+        "title": "This is my first post"
+    }
+}
+```
+```
+(POST) /api/posts
+{
+    "title": "First post",
+    "body": "This is not my first post.",
+    "slug": "first-blog-post"
+}
+```
+```
+(PUT) /api/posts/{slug}
+{
+    "title": "First Post",
+    "body": "This is not my first post.",
+    "slug": "first-blog-post"
+}
+```
+```
+(DELETE) /api/posts/{slug}
+```
 ## Contributing
 
 Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
